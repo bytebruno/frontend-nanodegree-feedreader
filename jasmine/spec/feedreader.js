@@ -34,7 +34,7 @@ $(function() {
         it('url defined and has content', function(){
             allFeeds.forEach(feed => {
                 expect(feed.url).toBeDefined()
-                expect(feed.url.trim()).not.toBe('');
+                expect(feed.url).not.toBe('');
             });
         });
 
@@ -46,7 +46,7 @@ $(function() {
         it('name defined and has content', function(){
             allFeeds.forEach(feed => {
                 expect(feed.name).toBeDefined()
-                expect(feed.name.trim()).not.toBe('');
+                expect(feed.name).not.toBe('');
             });
         });
 
@@ -72,9 +72,9 @@ $(function() {
           */
 
          it('menu changes visibility when clicked', function(){
-            $('.menu-icon-link').trigger('click');
+            $('.menu-icon-link').click();
             expect($('body').hasClass('menu-hidden')).toBe(false);
-            $('.menu-icon-link').trigger('click');
+            $('.menu-icon-link').click();
             expect($('body').hasClass('menu-hidden')).toBe(true);
          });
     });
@@ -95,20 +95,22 @@ $(function() {
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
         it('has elements on feed', function(done){
-            expect($('.feed').find('.entry').length).toBeGreaterThan(0);
+            expect($('.feed .entry').length).toBeGreaterThan(0);
             done();
         });
     });
        
     /* TODO: Write a new test suite named "New Feed Selection" */
     describe('New Feed Selection', function() {
-
+        let res1, res2 = [];
         beforeEach(function(done){
-            // deleting content
-            $('.feed').empty();
-            // calling loadFeed
-            loadFeed(1, function(){
-                done();
+            
+            loadFeed(0, function(){
+                res1 = $('.feed .entry');
+                loadFeed(1, function(){
+                    res2 = $('.feed .entry');
+                    done();
+                });
             });
         });       
         /* TODO: Write a test that ensures when a new feed is loaded
@@ -116,7 +118,7 @@ $(function() {
          * Remember, loadFeed() is asynchronous.
          */
         it('new feed loaded', function(done){
-            expect($('.feed').find('.entry').length).toBeGreaterThan(0);
+            expect(res1).not.toBe(res2);
             done();
         });
     });
